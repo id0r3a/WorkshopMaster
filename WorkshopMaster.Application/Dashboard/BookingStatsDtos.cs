@@ -22,6 +22,13 @@ namespace WorkshopMaster.Application.Dashboard
 
     public class BookingStatsDto
     {
+        // ➊ KPI: det dina kort visar
+        public int OpenOrders { get; set; }
+        public int CompletedThisWeek { get; set; }
+        public decimal RevenueLast30Days { get; set; }
+        public int TotalCustomers { get; set; }
+
+        // ➋ Extra grafer/statistik om du vill
         public List<MonthlyBookingCountDto> BookingsPerMonth { get; set; } = new();
         public List<TopServiceTypeDto> TopServiceTypes { get; set; } = new();
     }

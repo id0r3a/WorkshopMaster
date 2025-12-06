@@ -72,5 +72,23 @@ namespace WorkshopMaster.Infrastructure.Services
             await _db.SaveChangesAsync(cancellationToken);
             return true;
         }
+        public async Task<List<VehicleDto>> GetByCustomerAsync(int customerId)
+        {
+            var vehicles = await _db.Vehicles
+                .Include(v => v.Customer)
+                .Where(v => v.CustomerId == customerId)
+                .ToListAsync();
+
+            return vehicles.Select(v => new VehicleDto
+            {
+                Id = v.Id,
+                RegistrationNumber = v.RegistrationNumber,
+                Brand = v.Brand,
+                Model = v.Model,
+                Year = v.Year,
+                CustomerId = v.CustomerId,
+                CustomerName = v.Customer.FullName
+            }).ToList();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using WorkshopMaster.Application.Common;
 using WorkshopMaster.Application.Customers;
 using WorkshopMaster.Domain.Entities;
 using WorkshopMaster.Infrastructure.Persistence;
@@ -34,9 +35,18 @@ namespace WorkshopMaster.Infrastructure.Services
 
         public async Task<CustomerDto> CreateAsync(CreateCustomerDto dto, CancellationToken cancellationToken = default)
         {
+            var emailInUse = await _db.Customers
+                .AnyAsync(c => c.Email == dto.Email, cancellationToken);
+
+            if (emailInUse)
+            {
+                throw new CustomerAlreadyExistsException(dto.Email);
+            }
+
             var entity = _mapper.Map<Customer>(dto);
             _db.Customers.Add(entity);
             await _db.SaveChangesAsync(cancellationToken);
+
             return _mapper.Map<CustomerDto>(entity);
         }
 
@@ -45,8 +55,17 @@ namespace WorkshopMaster.Infrastructure.Services
             var entity = await _db.Customers.FindAsync(new object[] { id }, cancellationToken);
             if (entity is null) return null;
 
+            var emailInUse = await _db.Customers
+                .AnyAsync(c => c.Email == dto.Email && c.Id != id, cancellationToken);
+
+            if (emailInUse)
+            {
+                throw new CustomerAlreadyExistsException(dto.Email);
+            }
+
             _mapper.Map(dto, entity);
             await _db.SaveChangesAsync(cancellationToken);
+
             return _mapper.Map<CustomerDto>(entity);
         }
 

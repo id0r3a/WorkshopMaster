@@ -37,6 +37,13 @@ namespace WorkshopMaster.Api.Controllers
             return Ok(item);
         }
 
+        [HttpGet("by-customer/{customerId:int}")]
+        public async Task<ActionResult<List<VehicleDto>>> GetByCustomer(int customerId)
+        {
+            var items = await _vehicleService.GetByCustomerAsync(customerId);
+            return Ok(items);
+        }
+
         [HttpPost]
         public async Task<ActionResult<VehicleDto>> Create(CreateVehicleDto dto)
         {

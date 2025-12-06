@@ -15,9 +15,28 @@ namespace WorkshopMaster.Infrastructure.Services
 
         public async Task<BookingStatsDto> GetStatsAsync(CancellationToken cancellationToken = default)
         {
+            var now = DateTime.UtcNow;
+            var thirtyDaysAgo = now.AddDays(-30);
+            var weekAgo = now.AddDays(-7);
+
             var stats = new BookingStatsDto();
 
-            // Bokningar per månad (senaste 12 månaderna)
+            // 🔹 KPI: Open orders (Pending + Confirmed)
+            stats.OpenOrders = await _db.Bookings
+                .CountAsync(b => b.Status == "Pending" || b.Status == "Confirmed", cancellationToken);
+
+            // 🔹 KPI: Completed this week
+            stats.CompletedThisWeek = await _db.Bookings
+                .CountAsync(b => b.Status == "Completed" && b.EndTime >= weekAgo, cancellationToken);
+
+            // 🔹 KPI: Revenue last 30 days – tills du har riktig prislogik
+            stats.RevenueLast30Days = 0m;
+
+            // 🔹 KPI: Total customers
+            stats.TotalCustomers = await _db.Customers
+                .CountAsync(cancellationToken);
+
+            // 📈 Bokningar per månad (senaste 12 månaderna)
             var fromDate = DateTime.UtcNow.AddMonths(-11);
 
             stats.BookingsPerMonth = await _db.Bookings
@@ -29,10 +48,11 @@ namespace WorkshopMaster.Infrastructure.Services
                     Month = g.Key.Month,
                     Count = g.Count()
                 })
-                .OrderBy(x => x.Year).ThenBy(x => x.Month)
+                .OrderBy(x => x.Year)
+                .ThenBy(x => x.Month)
                 .ToListAsync(cancellationToken);
 
-            // Topp 3 tjänster
+            // ⭐ Topp 3 tjänster
             stats.TopServiceTypes = await _db.BookingServiceTypes
                 .GroupBy(bst => new { bst.ServiceTypeId, bst.ServiceType.Name })
                 .Select(g => new TopServiceTypeDto

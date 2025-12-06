@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WorkshopMaster.Application.Common;
 using WorkshopMaster.Application.Customers;
 
 namespace WorkshopMaster.Api.Controllers
@@ -30,10 +31,17 @@ namespace WorkshopMaster.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustomerDto>> Create(CreateCustomerDto dto)
+        public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerDto dto, CancellationToken ct)
         {
-            var created = await _customerService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            try
+            {
+                var customer = await _customerService.CreateAsync(dto, ct);
+                return CreatedAtAction(nameof(GetById), new { id = customer.Id }, customer);
+            }
+            catch (CustomerAlreadyExistsException ex)
+            {
+                return Conflict(new { message = ex.Message }); // HTTP 409
+            }
         }
 
         [HttpPut("{id:int}")]

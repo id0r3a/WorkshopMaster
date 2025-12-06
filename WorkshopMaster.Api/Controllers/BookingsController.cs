@@ -63,5 +63,15 @@ namespace WorkshopMaster.Api.Controllers
             if (!deleted) return NotFound();
             return NoContent();
         }
+        [HttpPatch("{id:int}/status")]
+        public async Task<ActionResult<BookingDto>> UpdateStatus(int id, UpdateBookingStatusDto dto)
+        {
+            var updated = await _bookingService.UpdateStatusAsync(id, dto);
+
+            if (updated is null)
+                return NotFound();
+
+            return Ok(updated);
+        }
     }
 }

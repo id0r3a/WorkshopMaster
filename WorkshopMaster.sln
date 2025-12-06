@@ -3,21 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkshopMaster.Domain", "WorkshopMaster.Domain\WorkshopMaster.Domain.csproj", "{C93FCB5D-4BAA-4D97-9481-D0AB7353BD02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkshopMaster.Domain", "WorkshopMaster.Domain\WorkshopMaster.Domain.csproj", "{C93FCB5D-4BAA-4D97-9481-D0AB7353BD02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkshopMaster.Application", "WorkshopMaster.Application\WorkshopMaster.Application.csproj", "{1826E99F-F439-4A90-9434-E8594F96964C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkshopMaster.Application", "WorkshopMaster.Application\WorkshopMaster.Application.csproj", "{1826E99F-F439-4A90-9434-E8594F96964C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkshopMaster.Infrastructure", "WorkshopMaster.Infrastructure\WorkshopMaster.Infrastructure.csproj", "{7730214B-A3EE-4BA9-90E5-6EC80B736BA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkshopMaster.Infrastructure", "WorkshopMaster.Infrastructure\WorkshopMaster.Infrastructure.csproj", "{7730214B-A3EE-4BA9-90E5-6EC80B736BA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkshopMaster.Api", "WorkshopMaster.Api\WorkshopMaster.Api.csproj", "{9CD6CF3F-1975-4DB2-9C6C-5198D17CA53D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkshopMaster.Api", "WorkshopMaster.Api\WorkshopMaster.Api.csproj", "{9CD6CF3F-1975-4DB2-9C6C-5198D17CA53D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkshopMaster.Tests", "WorkshopMaster.Tests\WorkshopMaster.Tests.csproj", "{E273211D-158E-438B-A9AF-DA10DD697321}"
 EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {841C5DAA-E187-4BCF-98E2-C5E91DBB116B}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -75,5 +71,23 @@ Global
 		{9CD6CF3F-1975-4DB2-9C6C-5198D17CA53D}.Release|x64.Build.0 = Release|Any CPU
 		{9CD6CF3F-1975-4DB2-9C6C-5198D17CA53D}.Release|x86.ActiveCfg = Release|Any CPU
 		{9CD6CF3F-1975-4DB2-9C6C-5198D17CA53D}.Release|x86.Build.0 = Release|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Debug|x64.Build.0 = Debug|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Debug|x86.Build.0 = Debug|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Release|x64.ActiveCfg = Release|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Release|x64.Build.0 = Release|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Release|x86.ActiveCfg = Release|Any CPU
+		{E273211D-158E-438B-A9AF-DA10DD697321}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {841C5DAA-E187-4BCF-98E2-C5E91DBB116B}
 	EndGlobalSection
 EndGlobal

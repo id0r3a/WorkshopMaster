@@ -144,5 +144,36 @@ namespace WorkshopMaster.Infrastructure.Services
             await _db.SaveChangesAsync(cancellationToken);
             return true;
         }
+        public async Task<BookingDto?> UpdateStatusAsync(
+        int id,
+        UpdateBookingStatusDto dto,
+        CancellationToken cancellationToken = default)
+        {
+            // Hämta booking
+            var booking = await _db.Bookings
+                .Include(b => b.Vehicle)
+                    .ThenInclude(v => v.Customer)
+                .Include(b => b.BookingServiceTypes)
+                    .ThenInclude(bst => bst.ServiceType)
+                .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
+
+            if (booking is null)
+            {
+                return null;
+            }
+
+            // Enkel validering av status – håll den i sync med FRONTEND & DB
+            var allowedStatuses = new[] { "Pending", "Confirmed", "Completed", "Cancelled" };
+            if (!allowedStatuses.Contains(dto.Status))
+            {
+                throw new ArgumentException($"Status '{dto.Status}' is not allowed.");
+            }
+
+            booking.Status = dto.Status;
+            await _db.SaveChangesAsync(cancellationToken);
+
+            // Map till BookingDto (du har säkert AutoMapper, annars bygg manuellt)
+            return _mapper.Map<BookingDto>(booking);
+        }
     }
 }

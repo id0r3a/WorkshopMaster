@@ -49,4 +49,8 @@ namespace WorkshopMaster.Application.Bookings
         public string? Status { get; set; }
         public string? VehicleRegistrationNumber { get; set; }
     }
+    public class UpdateBookingStatusDto
+    {
+        public string Status { get; set; } = default!;
+    }
 }

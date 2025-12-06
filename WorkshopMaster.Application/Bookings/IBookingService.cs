@@ -13,5 +13,6 @@ namespace WorkshopMaster.Application.Bookings
         Task<BookingDto> CreateAsync(CreateBookingDto dto, CancellationToken cancellationToken = default);
         Task<BookingDto?> UpdateAsync(int id, UpdateBookingDto dto, CancellationToken cancellationToken = default);
         Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default);
+        Task<BookingDto?> UpdateStatusAsync(int id, UpdateBookingStatusDto dto, CancellationToken cancellationToken = default);
     }
 }

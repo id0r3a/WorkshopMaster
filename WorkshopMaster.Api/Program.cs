@@ -1,8 +1,10 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using WorkshopMaster.Application.Bookings;
 using WorkshopMaster.Application.Common;
+using WorkshopMaster.Application.Common.Exceptions;
 using WorkshopMaster.Application.Customers;
 using WorkshopMaster.Application.Dashboard;
 using WorkshopMaster.Application.ServiceTypes;
@@ -24,6 +26,7 @@ builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IServiceTypeService, ServiceTypeService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IBookingStatsService, BookingStatsService>();
+
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
@@ -53,18 +56,35 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    DbSeeder.Seed(db);
+}
 
 // Global error handling (basic)
 app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
     {
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
         context.Response.ContentType = "application/json";
 
+        if (exception is ConflictException)
+        {
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                message = exception.Message
+            });
+            return;
+        }
+
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         await context.Response.WriteAsJsonAsync(new
         {
-            error = "An unexpected error occurred."
+            message = "An unexpected error occurred."
         });
     });
 });
