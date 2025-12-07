@@ -93,7 +93,7 @@ Enhetstester
 
 Logiktester
 
-Integrationstester (VG-krav)
+Integrationstester 
 
 Kör tester:
 dotnet test
