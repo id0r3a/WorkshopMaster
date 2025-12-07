@@ -1,79 +1,111 @@
-# WorkshopMaster – .NET 8 Backend API
+WorkshopMaster – Backend API 🚗🔧
+Ett komplett backend-API för ett modernt boknings- och verkstadsadministrationssystem. Byggt med .NET 8, SQL Server och tydlig lagerindelning. API:et används av frontenden för att hantera kunder, fordon, bokningar och verkstadsstatus.
 
-Backend-API för **WorkshopMaster**, ett boknings- och verkstadsystem för bilverkstad.  
-Byggt för att visa upp en modern .NET-backend med tydlig lagerindelning, SQL Server, validering, tester och CI via GitHub Actions.
+🌟 Vad systemet gör
 
-> Frontend (React/Vite) ligger i ett separat repo och pratar med detta API.
+WorkshopMaster är kärnan i ett digitalt verkstadsflöde:
 
----
+👤 Kundhantering
 
-## Innehåll
+Skapa, uppdatera och lista kunder
 
-- [Översikt](#översikt)
-- [Teknikstack](#teknikstack)
-- [Arkitektur](#arkitektur)
-- [Domänmodell](#domänmodell)
-- [Funktionalitet](#funktionalitet)
-- [Komma igång](#komma-igång)
-- [API-endpoints](#api-endpoints)
-- [Validering & felhantering](#validering--felhantering)
-- [Loggning](#loggning)
-- [Tester](#tester)
-- [CI / GitHub Actions](#ci--github-actions)
-- [Kända begränsningar & förbättringar](#kända-begränsningar--förbättringar)
+Unik e-postvalidering
 
----
+🚗 Fordon
 
-## Översikt
+Flera fordon per kund
 
-WorkshopMaster-backenden är ett **RESTful .NET 8 API** som hanterar:
+Validering av registreringsnummer + modell/brand
 
-- Kunder och deras fordon  
-- Tjänster (service-typer) som verkstaden erbjuder  
-- Bokningar kopplade till fordon  
-- Dashboard-statistik (antal bokningar, kunder, intäkter m.m.)
+📅 Bokningar
 
-Applikationen är byggd för att efterlikna hur en juniorutvecklare skulle strukturera ett **skarpt backendprojekt**:  
-tydliga lager, separerad domänlogik, validering, global felhantering, tester och CI.
+Skapa bokningar med datum, starttid och automatisk end-time
 
----
+Hantera status: Pending, Confirmed, Completed, Cancelled
 
-## Teknikstack
+Filtrering på status, registreringsnummer och datum
 
-**Backend**
+📊 Dashboard
 
-- .NET 8 Web API
-- C#
-- ASP.NET Core MVC Controllers
+Öppna ordrar
 
-**Data**
+Slutförda denna vecka
 
-- SQL Server
-- Entity Framework Core (code-first, migrationer)
-- Relationsmodell:
-  - One-to-many: `Customer → Vehicle`, `Vehicle → Booking`
-  - Many-to-many: `Booking ↔ ServiceType` via `BookingServiceType`
+Omsättning 30 dagar
 
-**Övrigt**
+Antal kunder
 
-- FluentValidation (inputvalidering)
-- AutoMapper (DTO ↔ entities)
-- Global error handler & custom exceptions
-- xUnit / liknande för enhetstester
-- GitHub Actions för CI (restore, build, test)
+All logik följer Clean Architecture-principer, så varje lager är isolerat och testbart.
 
----
+🧱 Arkitektur
 
-## Arkitektur
-
-Projektet följer en **Clean-ish Architecture / Service-Repository** struktur.
-
-```text
 src/
-  WorkshopMaster.Domain/        # Domänentiteter, affärslogik nära modellen
-  WorkshopMaster.Application/   # DTOs, services, interfaces, validators, mapping
-  WorkshopMaster.Infrastructure/# EF Core, DbContext, repository-implementationer, seed
-  WorkshopMaster.Api/           # Web API, controllers, DI, middleware, startup
 
-tests/
-  WorkshopMaster.Application.Tests/  # Enhetstester för services m.m.
+Domain – entiteter & regler
+
+Application – tjänster, DTOs, validering
+
+Infrastructure – EF Core, DbContext, repos
+
+Api – controllers, DI, middleware
+
+SQL Server med EF Core 8 migrationer.
+Relationer:
+
+Customer → Vehicles (1-many)
+
+Vehicle → Bookings (1-many)
+
+Booking ↔ ServiceType (many-many)
+
+🚀 Kom igång
+
+Klona projektet
+git clone https://github.com/
+<your-backend-repo>.git
+
+Installera
+dotnet restore
+
+Skapa databas
+dotnet ef database update
+
+Starta API
+dotnet run
+
+✔ API: http://localhost:5222
+
+✔ Swagger: /swagger
+
+📌 Endpoints (kort version)
+
+Customers: CRUD
+Vehicles: CRUD + by-customer
+Bookings: CRUD + status-PATCH + filtrering
+Dashboard: statistik-endpoint
+
+🧪 Tester
+
+Ligger under /tests
+Innehåller:
+
+Enhetstester
+
+Logiktester
+
+Integrationstester (VG-krav)
+
+Kör tester:
+dotnet test
+
+⚙️ GitHub Actions (CI)
+
+Pipeline kör:
+
+restore
+
+build
+
+test
+
+Workflow: .github/workflows/dotnet-ci.yml
