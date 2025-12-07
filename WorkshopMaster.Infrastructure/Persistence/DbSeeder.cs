@@ -7,7 +7,6 @@ namespace WorkshopMaster.Infrastructure.Persistence
     {
         public static void Seed(AppDbContext db)
         {
-            // Kör migrations
             db.Database.Migrate();
 
             SeedCustomers(db);
@@ -65,7 +64,7 @@ namespace WorkshopMaster.Infrastructure.Persistence
             if (db.Vehicles.Any()) return;
 
             var customers = db.Customers.OrderBy(c => c.Id).ToList();
-            if (!customers.Any()) return; // om du lyckats köra denna innan Customers… då har du andra problem
+            if (!customers.Any()) return; 
 
             var vehicles = new List<Vehicle>
             {
@@ -99,16 +98,15 @@ namespace WorkshopMaster.Infrastructure.Persistence
 
             var bookings = new List<Booking>();
 
-            // 12 bokningar, lite historik och lite framtid
             for (int i = 0; i < 12; i++)
             {
                 var vehicle = vehicles[i % vehicles.Count];
 
                 var start = today
-                    .AddDays(-4 + i)           // några dagar bakåt/framåt
-                    .AddHours(8 + (i % 4) * 2); // 08,10,12,14
+                    .AddDays(-4 + i)           
+                    .AddHours(8 + (i % 4) * 2); 
 
-                var durationHours = 1 + (i % 3); // 1–3 timmar
+                var durationHours = 1 + (i % 3); 
                 var end = start.AddHours(durationHours);
 
                 var status = i switch
@@ -128,7 +126,6 @@ namespace WorkshopMaster.Infrastructure.Persistence
                     Notes = $"Seedad bokning #{i + 1} för {vehicle.RegistrationNumber}"
                 };
 
-                // Koppla 1–3 tjänstetyper till varje bokning
                 var serviceCount = 1 + (i % 3);
                 var usedIndexes = new HashSet<int>();
 

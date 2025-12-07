@@ -16,7 +16,7 @@ namespace WorkshopMaster.Domain.Entities
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-        public string Status { get; set; } = "Pending"; // Pending, Confirmed, Completed, Cancelled
+        public string Status { get; set; } = "Pending"; 
         public string? Notes { get; set; }
 
         public ICollection<BookingServiceType> BookingServiceTypes { get; set; }

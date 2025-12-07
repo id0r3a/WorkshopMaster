@@ -29,14 +29,14 @@ namespace WorkshopMaster.Infrastructure.Services
             stats.CompletedThisWeek = await _db.Bookings
                 .CountAsync(b => b.Status == "Completed" && b.EndTime >= weekAgo, cancellationToken);
 
-            // 🔹 KPI: Revenue last 30 days – tills du har riktig prislogik
+            // 🔹 KPI: Revenue last 30 days 
             stats.RevenueLast30Days = 0m;
 
             // 🔹 KPI: Total customers
             stats.TotalCustomers = await _db.Customers
                 .CountAsync(cancellationToken);
 
-            // 📈 Bokningar per månad (senaste 12 månaderna)
+            // Bokningar per månad (senaste 12 månaderna)
             var fromDate = DateTime.UtcNow.AddMonths(-11);
 
             stats.BookingsPerMonth = await _db.Bookings

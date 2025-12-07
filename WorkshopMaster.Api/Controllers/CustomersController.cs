@@ -40,7 +40,7 @@ namespace WorkshopMaster.Api.Controllers
             }
             catch (CustomerAlreadyExistsException ex)
             {
-                return Conflict(new { message = ex.Message }); // HTTP 409
+                return Conflict(new { message = ex.Message }); 
             }
         }
 

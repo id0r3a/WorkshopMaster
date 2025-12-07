@@ -172,7 +172,6 @@ namespace WorkshopMaster.Infrastructure.Services
             booking.Status = dto.Status;
             await _db.SaveChangesAsync(cancellationToken);
 
-            // Map till BookingDto (du har säkert AutoMapper, annars bygg manuellt)
             return _mapper.Map<BookingDto>(booking);
         }
     }
