@@ -1,111 +1,124 @@
-WorkshopMaster – Backend API 🚗🔧
-Ett komplett backend-API för ett modernt boknings- och verkstadsadministrationssystem. Byggt med .NET 8, SQL Server och tydlig lagerindelning. API:et används av frontenden för att hantera kunder, fordon, bokningar och verkstadsstatus.
+🚗 WorkshopMaster – Backend API (.NET 8)
 
-🌟 Vad systemet gör
+Backend-API för WorkshopMaster, ett komplett boknings- och verkstadssystem för bilservice.
+API:t hanterar all affärslogik, datalagring, validering, statistik och integration mot SQL Server.
 
-WorkshopMaster är kärnan i ett digitalt verkstadsflöde:
+Byggt för att demonstrera ren arkitektur, professionell API-design, EF Core, enhetstester och CI/CD.
 
-👤 Kundhantering
+🧱 Arkitekturöversikt
+Domain – entiteter och kärnregler
 
-Skapa, uppdatera och lista kunder
+Application – tjänster, DTO:er, validering
 
-Unik e-postvalidering
+Infrastructure – EF Core, databasåtkomst
 
-🚗 Fordon
+API – endpoints, swagger, global error handler
 
-Flera fordon per kund
+⚙️ Komma igång
+1️⃣ Klona repo
+git clone <REPO_URL>
+cd WorkshopMaster
 
-Validering av registreringsnummer + modell/brand
+2️⃣ Installera beroenden
+dotnet restore
 
-📅 Bokningar
+3️⃣ Databasinställning
 
-Skapa bokningar med datum, starttid och automatisk end-time
+API:t använder SQL Server.
+Redigera connection string i:
+WorkshopMaster.Api/appsettings.Development.json
 
-Hantera status: Pending, Confirmed, Completed, Cancelled
+🗄️ Skapa databasen
+Alternativ A – via EF Core migrations
+cd WorkshopMaster.Api
+dotnet ef database update
 
-Filtrering på status, registreringsnummer och datum
+Alternativ B – SQL-script
+
+I root-mappen ligger:
+database.sql
+Öppna i SSMS → Kör.
+
+▶️ Starta API
+cd WorkshopMaster.Api
+dotnet run
+API:n körs på:
+http://localhost:5222
+Swagger: http://localhost:5222/swagger
+
+📡 API Endpoints (översikt)
+👤 Customers
+
+GET /api/Customers
+
+GET /api/Customers/{id}
+
+POST /api/Customers
+
+PUT /api/Customers/{id}
+
+DELETE /api/Customers/{id}
+
+🚘 Vehicles
+
+GET /api/Vehicles
+
+GET /api/Vehicles/{id}
+
+GET /api/Vehicles/by-customer/{customerId}
+
+POST /api/Vehicles
+
+PUT /api/Vehicles/{id}
+
+DELETE /api/Vehicles/{id}
+
+🔧 Service Types
+
+GET /api/ServiceTypes
+
+POST /api/ServiceTypes
+
+PUT /api/ServiceTypes/{id}
+
+DELETE /api/ServiceTypes/{id}
+
+📅 Bookings
+
+GET /api/Bookings
+
+GET /api/Bookings/{id}
+
+POST /api/Bookings
+
+PATCH /api/Bookings/{id}/status
+
+DELETE /api/Bookings/{id}
 
 📊 Dashboard
 
-Öppna ordrar
-
-Slutförda denna vecka
-
-Omsättning 30 dagar
-
-Antal kunder
-
-All logik följer Clean Architecture-principer, så varje lager är isolerat och testbart.
-
-🧱 Arkitektur
-
-src/
-
-Domain – entiteter & regler
-
-Application – tjänster, DTOs, validering
-
-Infrastructure – EF Core, DbContext, repos
-
-Api – controllers, DI, middleware
-
-SQL Server med EF Core 8 migrationer.
-Relationer:
-
-Customer → Vehicles (1-many)
-
-Vehicle → Bookings (1-many)
-
-Booking ↔ ServiceType (many-many)
-
-🚀 Kom igång
-
-Klona projektet
-git clone https://github.com/
-<your-backend-repo>.git
-
-Installera
-dotnet restore
-
-Skapa databas
-dotnet ef database update
-
-Starta API
-dotnet run
-
-✔ API: http://localhost:5222
-
-✔ Swagger: /swagger
-
-📌 Endpoints (kort version)
-
-Customers: CRUD
-Vehicles: CRUD + by-customer
-Bookings: CRUD + status-PATCH + filtrering
-Dashboard: statistik-endpoint
+GET /api/Dashboard/booking-stats
 
 🧪 Tester
 
-Ligger under /tests
-Innehåller:
-
-Enhetstester
-
-Logiktester
-
-Integrationstester 
-
-Kör tester:
+Kör alla tester lokalt:
 dotnet test
+GitHub Actions-pipeline kör:
 
-⚙️ GitHub Actions (CI)
+Restore
 
-Pipeline kör:
+Build
 
-restore
+Test
 
-build
+På varje push till master.
 
-test
+🐞 Kända buggar / Begränsningar
 
-Workflow: .github/workflows/dotnet-ci.yml
+🚫 Ingen autentisering – API:t är öppet (endast utvecklingsmiljö).
+
+⏱️ Tidzonslogik enkel – frontend skickar lokal tid, backend konverterar till UTC.
+
+🔁 Dubbelbokningslogiken är enkel och saknar avancerade regler.
+
+🛠️ Uppdatering av ServiceTypes påverkar inte historiska bokningar.
