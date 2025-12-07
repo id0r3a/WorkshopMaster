@@ -1,6 +1,6 @@
 # WorkshopMaster – .NET 8 Backend API
 
-Backend-API för **WorkshopMaster**, ett boknings- och verkstadsystem för bilverkstad (likt GLS Verkstad).  
+Backend-API för **WorkshopMaster**, ett boknings- och verkstadsystem för bilverkstad.  
 Byggt för att visa upp en modern .NET-backend med tydlig lagerindelning, SQL Server, validering, tester och CI via GitHub Actions.
 
 > Frontend (React/Vite) ligger i ett separat repo och pratar med detta API.
